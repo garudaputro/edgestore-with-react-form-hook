@@ -7,7 +7,7 @@
 import { Button } from "@/components/ui/button";
 import { SingleImageDropzone } from "@/components/upload/single-image";
 import { useEdgeStore } from "@/lib/edgestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -50,6 +50,7 @@ export default function TestUploadWithForm() {
 
 function SingleImageExample() {
   const [file, setFile] = useState<File>();
+  const [linkThumbnail, setLinkThumbnail] = useState("");
   const [progress, setProgress] = useState<
     "PENDING" | "COMPLETE" | "ERROR" | number
   >("PENDING");
@@ -89,20 +90,18 @@ function SingleImageExample() {
           filename: file.name,
         });
 
-        // check value of uploadRes bug always got undefined
-        console.log(uploadRes);
-        console.log(values);
+   
 
         //  i want to send the data to this api, im using prisma on this , while I give a comment
 
-        // const response = await axios.post("/api/products", {
-        //   thumbnail: uploadRes?.url,
-        //   name: values.name,
-        // });
+        const response = await axios.post("/api/products", {
+          thumbnail: uploadRes?.url,
+          name: values.name,
+        });
 
-        // if (response.status === 201) {
-        //   toast.success(response.data.message);
-        // }
+        if (response.status === 201) {
+          toast.success(response.data.message);
+        }
       } catch (err) {
         setProgress("ERROR");
       }
@@ -110,6 +109,31 @@ function SingleImageExample() {
     setIsSubmitting(false);
   };
 
+  
+  useEffect(() => {
+    if (uploadRes?.url && file) {
+    
+      const sendDataToApi = async () => {
+        try {
+          // const response = await axios.post("/api/products", {
+          //   thumbnail: uploadRes.url,
+          //   name: form.getValues().name,
+          // });
+  
+          // if (response.status === 201) {
+          //   toast.success(response.data.message);
+          // }
+          console.log(uploadRes.url, form.getValues().name);
+          
+        } catch (err) {
+          setProgress("ERROR");
+        }
+        setIsSubmitting(false);
+      };
+  
+      sendDataToApi();
+    }
+  }, [uploadRes, file, form]);
   return (
     <>
       <Dialog>
