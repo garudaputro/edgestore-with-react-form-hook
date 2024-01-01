@@ -95,7 +95,7 @@ function SingleImageExample() {
         //  i want to send the data to this api, im using prisma on this , while I give a comment
 
         const response = await axios.post("/api/products", {
-          thumbnail: res.url,
+          thumbnail: uploadRes?.url,
           name: values.name,
         });
 
@@ -110,30 +110,30 @@ function SingleImageExample() {
   };
 
   
-  // useEffect(() => {
-  //   if (uploadRes?.url && file) {
+  useEffect(() => {
+    if (uploadRes?.url && file) {
     
-  //     const sendDataToApi = async () => {
-  //       try {
-  //         // const response = await axios.post("/api/products", {
-  //         //   thumbnail: uploadRes.url,
-  //         //   name: form.getValues().name,
-  //         // });
+      const sendDataToApi = async () => {
+        try {
+          // const response = await axios.post("/api/products", {
+          //   thumbnail: uploadRes.url,
+          //   name: form.getValues().name,
+          // });
   
-  //         // if (response.status === 201) {
-  //         //   toast.success(response.data.message);
-  //         // }
-  //         console.log(uploadRes.url, form.getValues().name);
+          // if (response.status === 201) {
+          //   toast.success(response.data.message);
+          // }
+          console.log(uploadRes.url, form.getValues().name);
           
-  //       } catch (err) {
-  //         setProgress("ERROR");
-  //       }
-  //       setIsSubmitting(false);
-  //     };
+        } catch (err) {
+          setProgress("ERROR");
+        }
+        setIsSubmitting(false);
+      };
   
-  //     sendDataToApi();
-  //   }
-  // }, [uploadRes, file, form]);
+      sendDataToApi();
+    }
+  }, [uploadRes, file, form]);
   return (
     <>
       <Dialog>
